@@ -10,7 +10,7 @@ public class SistemaUniesp {
 
     public static void main(String[] args) {
 
-        AlunoRepositoryMemoria repository = new AlunoRepositoryMemoria();
+        AlunoRepositoryPostgres repository = new AlunoRepositoryPostgres();
         AlunoService           service    = new AlunoService(repository);
         AlunoController        controller = new AlunoController(service);
 
