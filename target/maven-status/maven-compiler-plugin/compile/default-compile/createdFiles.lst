@@ -1,8 +1,9 @@
 repository\AlunoRepositoryPostgres.class
 infra\DatabaseConnection.class
+model\Aluno.class
 controller\AlunoController.class
+infra\HealthCheckServer.class
 repository\AlunoRepository.class
 repository\AlunoRepositoryMemoria.class
-model\Aluno.class
 SistemaUniesp.class
 service\AlunoService.class

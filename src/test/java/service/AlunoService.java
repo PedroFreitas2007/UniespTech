@@ -17,31 +17,53 @@ public class AlunoService {
         this.repository = repository;
     }
 
-    public String cadastrarAluno(String nome, String cpf) {
+    public String cadastrar(String nome, String cpf) {
         log.info("Tentativa de cadastro - nome: {}, cpf: {}", nome, cpf);
 
         if (nome == null || nome.isBlank()) {
             log.warn("Cadastro rejeitado - nome vazio");
-            return "ERRO: Nome não pode ser vazio.";
+            return "ERRO: Nome não pode ser vazio!";
         }
-        if (cpf == null || cpf.length() != 11 || !cpf.matches("\\d{11}")) {
-            log.warn("Cadastro rejeitado - CPF inválido: {}", cpf);
-            return "ERRO: CPF inválido. Informe exatamente 11 dígitos numéricos.";
+        if (!nome.matches("[a-zA-ZÀ-ÿ\\s]+")) {
+            log.warn("Cadastro rejeitado - nome com caracteres inválidos: {}", nome);
+            return "ERRO: Nome não pode conter números ou caracteres especiais!";
+        }
+        if (cpf == null || cpf.isBlank()) {
+            log.warn("Cadastro rejeitado - CPF vazio");
+            return "ERRO: CPF não pode ser vazio!";
+        }
+        if (!cpf.matches("\\d+")) {
+            log.warn("Cadastro rejeitado - CPF com letras: {}", cpf);
+            return "ERRO: CPF deve conter apenas números!";
+        }
+        if (cpf.length() != 11) {
+            log.warn("Cadastro rejeitado - CPF com tamanho inválido: {}", cpf);
+            return "ERRO: CPF deve ter exatamente 11 dígitos!";
         }
 
         try {
             repository.salvar(new Aluno(nome.trim(), cpf.trim()));
             log.info("Aluno cadastrado com sucesso - nome: {}, cpf: {}", nome, cpf);
-            return "Aluno '" + nome + "' cadastrado com sucesso!";
+            return "Aluno cadastrado com sucesso! Nome: " + nome;
         } catch (RuntimeException e) {
             log.error("Erro ao cadastrar aluno - {}", e.getMessage());
             return "ERRO: " + e.getMessage();
         }
     }
 
-    public List<Aluno> listarAlunos() {
+    // Mantém compatibilidade com o controller
+    public String cadastrarAluno(String nome, String cpf) {
+        return cadastrar(nome, cpf);
+    }
+
+    public List<Aluno> listarTodos() {
         log.info("Listando todos os alunos");
         return repository.listarTodos();
+    }
+
+    // Mantém compatibilidade com o controller
+    public List<Aluno> listarAlunos() {
+        return listarTodos();
     }
 
     public String deletarTodos(boolean confirmado) {
@@ -52,5 +74,10 @@ public class AlunoService {
         repository.deletarTodos();
         log.warn("TODOS os alunos foram deletados!");
         return "Todos os alunos foram removidos.";
+    }
+
+    public void deletarTodos() {
+        repository.deletarTodos();
+        log.warn("TODOS os alunos foram deletados!");
     }
 }

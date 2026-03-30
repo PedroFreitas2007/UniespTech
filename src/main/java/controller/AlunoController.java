@@ -13,18 +13,14 @@ public class AlunoController {
     }
 
     public String cadastrarAluno(String nome, String cpf) {
-        return service.cadastrar(nome, cpf);
+        return service.cadastrarAluno(nome, cpf);
     }
 
     public List<Aluno> listarAlunos() {
-        return service.listarTodos();
+        return service.listarAlunos();
     }
 
     public String deletarTodos(boolean confirmado) {
-        if (!confirmado) {
-            return "Operação cancelada.";
-        }
-        service.deletarTodos();
-        return "Todos os dados foram apagados!";
+        return service.deletarTodos(confirmado);
     }
 }

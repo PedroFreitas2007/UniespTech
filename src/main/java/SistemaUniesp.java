@@ -1,4 +1,5 @@
 import controller.AlunoController;
+import infra.HealthCheckServer;
 import model.Aluno;
 import repository.AlunoRepositoryPostgres;
 import service.AlunoService;
@@ -9,6 +10,9 @@ import java.util.Scanner;
 public class SistemaUniesp {
 
     public static void main(String[] args) {
+
+        // Inicia o servidor de Health Check em background
+        HealthCheckServer.iniciar();
 
         AlunoRepositoryPostgres repository = new AlunoRepositoryPostgres();
         AlunoService            service    = new AlunoService(repository);
