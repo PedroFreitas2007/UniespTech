@@ -46,6 +46,33 @@ public class AlunoRepositoryPostgres implements AlunoRepository {
     }
 
     @Override
+    public boolean cpfJaCadastrado(String cpf) {
+        String sql = "SELECT COUNT(*) FROM alunos WHERE cpf = ?";
+        try (Connection conn = DatabaseConnection.obterConexao();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, cpf);
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            return rs.getInt(1) > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao verificar CPF: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public int proximoId() {
+        String sql = "SELECT COALESCE(MAX(id), 0) + 1 FROM alunos";
+        try (Connection conn = DatabaseConnection.obterConexao();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            rs.next();
+            return rs.getInt(1);
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao obter próximo id: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
     public List<Aluno> listarTodos() {
         String sql = "SELECT id, nome, cpf FROM alunos ORDER BY id";
         List<Aluno> alunos = new ArrayList<>();

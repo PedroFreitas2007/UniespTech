@@ -1,5 +1,8 @@
+repository\AlunoRepositoryPostgres.class
+infra\DatabaseConnection.class
 controller\AlunoController.class
 repository\AlunoRepository.class
 repository\AlunoRepositoryMemoria.class
 model\Aluno.class
+SistemaUniesp.class
 service\AlunoService.class
